@@ -1,3 +1,5 @@
+use std::default;
+
 use winit::{
     event::*,
     event_loop::{ControlFlow, EventLoop},
@@ -64,7 +66,9 @@ struct State {
     swap_chain: wgpu::SwapChain,
     size: winit::dpi::PhysicalSize<u32>,
     clear_color: wgpu::Color,
+    use_color: bool,
     render_pipeline: wgpu::RenderPipeline,
+    color_render_pipeline: wgpu::RenderPipeline,
 }
 
 impl State {
@@ -150,6 +154,47 @@ impl State {
             },
         });
 
+        let shader = device.create_shader_module(&wgpu::ShaderModuleDescriptor {
+            label: Some("Color Challenge Shader"),
+            flags: wgpu::ShaderFlags::all(),
+            source: wgpu::ShaderSource::Wgsl(include_str!("color_challenge.wgsl").into()),
+        });
+
+        let color_render_pipeline = device.create_render_pipeline(&wgpu::RenderPipelineDescriptor {
+            label: Some("Color Challenge Render Pipeline"),
+            layout: Some(&render_pipeline_layout),
+            vertex: wgpu::VertexState {
+                module: &shader,
+                entry_point: "main",
+                buffers: &[], //This is being specified in the shader
+            },
+            fragment: Some(wgpu::FragmentState { //Technically optional - Used to store colour data to the swap chain
+                module: &shader,
+                entry_point: "main",
+                targets: &[wgpu::ColorTargetState {
+                    format:sc_desc.format,
+                    blend: Some(wgpu::BlendState::REPLACE),
+                    write_mask: wgpu::ColorWrite::ALL,
+                }],
+            }),
+            primitive: wgpu::PrimitiveState {
+                topology: wgpu::PrimitiveTopology::TriangleList,
+                strip_index_format: None,
+                front_face: wgpu::FrontFace::Ccw,
+                cull_mode: Some(wgpu::Face::Back),
+                polygon_mode: wgpu::PolygonMode::Fill,
+                ..Default::default()
+            },
+            depth_stencil: None,
+            multisample: wgpu::MultisampleState {
+                count: 1,
+                mask: !0,
+                alpha_to_coverage_enabled: false,
+            },
+        });
+
+        let use_color = true;
+
         Self {
             surface, 
             device, 
@@ -158,7 +203,9 @@ impl State {
             swap_chain,
             size,
             clear_color,
+            use_color, 
             render_pipeline,
+            color_render_pipeline
         }
     }
 
@@ -178,6 +225,15 @@ impl State {
                     b: 1.0,
                     a: 1.0,
                 };
+                true
+            }
+            WindowEvent::KeyboardInput { 
+                input: KeyboardInput { 
+                    state: ElementState::Pressed,
+                    virtual_keycode: Some(VirtualKeyCode::Space),
+                    ..
+                }, .. } => {
+                self.use_color = !self.use_color;
                 true
             }
             _ => false
@@ -214,7 +270,11 @@ impl State {
                 depth_stencil_attachment: None,
             });
 
-            render_pass.set_pipeline(&self.render_pipeline);
+            render_pass.set_pipeline(if self.use_color { 
+                &self.color_render_pipeline
+            } else {
+                &self.render_pipeline
+            });
             render_pass.draw(0..3, 0..1);
         }
     
