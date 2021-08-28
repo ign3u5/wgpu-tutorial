@@ -4,6 +4,11 @@ I am following [sotrh's learn-wgpu tutorial](https://sotrh.github.io/learn-wgpu/
 ## Status
 I am just about to start: [The results](https://sotrh.github.io/learn-wgpu/beginner/tutorial5-textures/#the-results).
 
+## Dependencies
+Dependency | Use
+--- | ---
+anyhow | Simplifies error handling.
+
 ## Glossary
 Word | Definition
 --- | ---
