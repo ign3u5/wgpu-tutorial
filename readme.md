@@ -2,7 +2,7 @@
 I am following [sotrh's learn-wgpu tutorial](https://sotrh.github.io/learn-wgpu/).
 
 ## Status
-I am just about to start: [A change to the VERTICES](https://sotrh.github.io/learn-wgpu/beginner/tutorial5-textures/#a-change-to-the-vertices).
+I am just about to start: [The results](https://sotrh.github.io/learn-wgpu/beginner/tutorial5-textures/#the-results).
 
 ## Glossary
 Word | Definition
