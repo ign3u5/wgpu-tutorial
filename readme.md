@@ -14,3 +14,4 @@ Word | Definition
 --- | ---
 BindGroup | Describes a set of resources and how they can be accessed by a **shader**.
 PipelineLayout | Contains a list of `BindGroupLayout`'s the **pipeline** can use.
+Uniform | A blob of data that is available to every invocation of a set of shaders.
