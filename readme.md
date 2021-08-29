@@ -2,7 +2,7 @@
 I am following [sotrh's learn-wgpu tutorial](https://sotrh.github.io/learn-wgpu/).
 
 ## Status
-I am just about to start: [A controller for our camera](https://sotrh.github.io/learn-wgpu/beginner/tutorial6-uniforms/#a-controller-for-our-camera).
+I am just about to start: [Instancing](https://sotrh.github.io/learn-wgpu/beginner/tutorial7-instancing/#the-instance-buffer).
 
 ## Dependencies
 Dependency | Use
@@ -24,4 +24,6 @@ var<uniform> camera: Camera;
 should be
 ```
 var<uniform> camera: CameraUniform;
-```
+```  
+
+Point 2 above [Challenge](https://sotrh.github.io/learn-wgpu/beginner/tutorial6-uniforms/#challenge) should be **one** not **on**
